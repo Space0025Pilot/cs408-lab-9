@@ -18,14 +18,27 @@ function randomRGB() {
   return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
 }
 
-class Ball {
-  constructor(x, y, velX, velY, color, size) {
+//shape class
+class Shape {
+  constructor(x, y, velX, velY){
     this.x = x;
     this.y = y;
     this.velX = velX;
     this.velY = velY;
+  }
+}
+
+class Ball extends Shape{
+  constructor(x, y, velX, velY, color, size) {
+    //call the shape constructor with super
+    super(x, y, velX, velY);
+    // this.x = x;
+    // this.y = y;
+    // this.velX = velX;
+    // this.velY = velY;
     this.color = color;
     this.size = size;
+    this.exists = true;
   }
 
   draw() {
@@ -57,19 +70,32 @@ class Ball {
   }
 
   collisionDetect() {
-    for (const ball of balls) {
-      if (!(this === ball)) {
-        const dx = this.x - ball.x;
-        const dy = this.y - ball.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+    //detect collision only is the exists value is true
+    if(this.exists == true) {
+      for (const ball of balls) {
+        if (!(this === ball)) {
+          const dx = this.x - ball.x;
+          const dy = this.y - ball.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < this.size + ball.size) {
-          ball.color = this.color = randomRGB();
+          if (distance < this.size + ball.size) {
+            ball.color = this.color = randomRGB();
+          }
         }
       }
     }
   }
 }
+//original collisionDetect() method code
+// if (!(this === ball)) {
+//   const dx = this.x - ball.x;
+//   const dy = this.y - ball.y;
+//   const distance = Math.sqrt(dx * dx + dy * dy);
+
+//   if (distance < this.size + ball.size) {
+//     ball.color = this.color = randomRGB();
+//   }
+// }
 
 const balls = [];
 
